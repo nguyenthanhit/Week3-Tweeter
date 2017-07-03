@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.codepath.apps.restclienttemplate"
+    package="com.codepath.apps.mytwitter"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -8,15 +8,15 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".RestApplication"
+        android:name="com.codepath.apps.mytwitter.TwitterApplication"
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppBaseTheme" >
      
         <activity
-            android:name="com.codepath.apps.restclienttemplate.LoginActivity"
-            android:theme="@style/AppTheme"
+            android:name="com.codepath.apps.mytwitter.activity.LoginActivity"
+            android:theme="@style/AppBaseTheme"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,6 +34,9 @@
                     android:scheme="@string/intent_scheme" />
             </intent-filter>
         </activity>
+        <activity
+            android:theme="@style/AppBaseTheme"
+            android:name="com.codepath.apps.mytwitter.activity.TimeLineActivity"/>
     </application>
 
 </manifest>

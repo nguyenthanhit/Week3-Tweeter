@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#2196F3</color>
+    <color name="colorPrimaryDark">#1976D2</color>
+    <color name="colorAccent">#FF5722</color>
+    <color name="textColorPrimary">#303030</color>
+    <color name="colorBackground">#56ACED</color>
+
+    <color name="whiteDark">#a3a2a2</color>
+    <color name="subtitle_text_color">#616161</color>
+    <color name="todo_item_divider">#D3D3D3</color>
+
+    <color name="border_priority">#E4E4E4</color>
+    <color name="grey">#EEEEEE</color>
+    <color name="empty_subtitle_color">#BDBDBD</color>
+    <color name="hint_color">#757575</color>
+
+    <color name="transperant">#0000</color>
+</resources>

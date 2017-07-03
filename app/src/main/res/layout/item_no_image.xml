@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:cardElevation="@dimen/cardview_default_elevation"
+    app:cardUseCompatPadding="true">
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            >
+            <ImageView
+                android:id="@+id/ivAvatar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+                tools:src="@drawable/main_logo" />
+
+            <RelativeLayout
+                android:id="@+id/layout1"
+                android:layout_toRightOf="@id/ivAvatar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_weight="2">
+
+                <TextView
+                    android:id="@+id/tvName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textStyle="bold"
+                    tools:text="Demo" />
+                <TextView
+                    android:id="@+id/tvNickName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/tvName"
+                    android:layout_marginLeft="10dp"
+                    android:layout_alignTop="@id/tvName"
+                    android:gravity="center"
+                    android:layout_alignBottom="@id/tvName"
+                    android:text="sdasd"
+                    />
+                <TextView
+                    android:id="@+id/tvTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    tools:text="9h"
+                    android:textColor="@color/hint_color" />
+
+                <TextView
+                    android:id="@+id/tvContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvName"
+                    android:layout_marginTop="8dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat"
+                    tools:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a" />
+
+                <ImageButton
+                    android:id="@+id/ibReply"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvContent"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/transperant"
+                    android:src="@drawable/ic_reply" />
+
+                <TextView
+                    android:id="@+id/tvNumberOfShare"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/ibShare"
+                    android:layout_alignTop="@id/ibShare"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="8dp"
+                    android:gravity="center"
+                    android:textColor="@color/hint_color"
+                    tools:text="11" />
+                <ImageButton
+                    android:id="@+id/ibShare"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/ibReply"
+                    android:layout_toLeftOf="@id/tvNumberOfShare"
+                    android:background="@color/transperant"
+                    android:src="@drawable/ic_no_repeat" />
+
+                <TextView
+
+                    android:id="@+id/tvLike"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:gravity="center"
+                    android:textColor="@color/hint_color"
+                    tools:text="11"
+                    android:layout_alignTop="@id/ibLike"
+                    android:layout_alignBottom="@id/ibLike"
+                    android:layout_toStartOf="@id/tvTime"
+                     />
+                <ImageButton
+                    android:id="@+id/ibLike"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/ibShare"
+                    android:layout_toLeftOf="@id/tvLike"
+                    android:background="@color/transperant"
+                    android:src="@drawable/ic_no_like" />
+            </RelativeLayout>
+            <View
+                android:layout_below="@id/layout1"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#EAEAEA" />
+        </RelativeLayout>
+
+</android.support.v7.widget.CardView>
