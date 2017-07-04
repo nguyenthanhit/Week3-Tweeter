@@ -9,7 +9,9 @@ import com.google.gson.annotations.SerializedName;
  * Created by Admin on 7/3/2017.
  */
 
-public class User   {
+public class User implements Parcelable  {
+
+    public User(){}
 
     @SerializedName("id")
     private long id;
@@ -39,5 +41,52 @@ public class User   {
         return urlAvatar;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setScreenName(String screenName) {
+        this.screenName = screenName;
+    }
+
+    public void setUrlAvatar(String urlAvatar) {
+        this.urlAvatar = urlAvatar;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<User> CREATOR
+            = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel source) {
+            return new User(source);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(id);
+        dest.writeString(name);
+        dest.writeString(screenName);
+        dest.writeString(urlAvatar);
+
+    }
+
+    private User(Parcel in){
+        id =in.readLong();
+        name = in.readString();
+        screenName = in.readString();
+        urlAvatar = in.readString();
+    }
 }

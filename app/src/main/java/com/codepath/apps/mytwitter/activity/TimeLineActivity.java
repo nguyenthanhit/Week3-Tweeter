@@ -15,6 +15,7 @@ import com.codepath.apps.mytwitter.Utity.DateUtity;
 import com.codepath.apps.mytwitter.fragment.PostTweetDialogFragment;
 import com.codepath.apps.mytwitter.fragment.TweetListFragment;
 import com.codepath.apps.mytwitter.models.Tweet;
+import com.codepath.apps.mytwitter.models.User;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -38,13 +39,15 @@ public class TimeLineActivity extends AppCompatActivity {
 
     @BindView(R.id.toolBar)
     Toolbar toolbar;
-    PostTweetDialogFragment fragmentt;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setIcon(R.drawable.main_logo);
         startFragment();
     }
 
@@ -54,9 +57,4 @@ public class TimeLineActivity extends AppCompatActivity {
                 .commit();
     }
 
-    public void postnewTweet(View view) {
-        Toast.makeText(this,"ada",Toast.LENGTH_SHORT).show();
-        fragmentt = PostTweetDialogFragment.newInstance();
-        fragmentt.show(getSupportFragmentManager(),"");
-    }
 }

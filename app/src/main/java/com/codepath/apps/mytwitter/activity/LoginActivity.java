@@ -13,6 +13,7 @@ import com.codepath.oauth.OAuthLoginActionBarActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+
 public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 
 	@BindView(R.id.toolBar)
