@@ -1,5 +1,8 @@
 package com.codepath.apps.mytwitter.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
@@ -14,7 +17,7 @@ import java.util.List;
  * Created by Admin on 7/2/2017.
  */
 
-public class Tweet {
+public class Tweet  implements Parcelable{
     @SerializedName("text")
     private String content;
 
@@ -36,6 +39,13 @@ public class Tweet {
     @SerializedName("favorite_count")
     private int favouritecount;
 
+    public Tweet(Parcel in) {
+        id = in.readLong();
+        content = in.readString();
+        user = in.readParcelable(User.class.getClassLoader());
+        createAt = in.readString();
+    }
+
 
     public Media getMedia() {
         return media;
@@ -49,6 +59,31 @@ public class Tweet {
 
     @SerializedName("user")
     private User user;
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(id);
+        dest.writeString(content);
+        dest.writeString(createAt);
+        dest.writeValue(user);
+    }
+
+    public static  final Creator<Tweet> CREATOR = new Creator<Tweet>() {
+        @Override
+        public Tweet createFromParcel(Parcel source) {
+            return new Tweet(source);
+        }
+
+        @Override
+        public Tweet[] newArray(int size) {
+            return new Tweet[size];
+        }
+    };
 
     public class Media {
         @SerializedName("media_url_https")
@@ -110,5 +145,21 @@ public class Tweet {
             }
         }
         return tweets;
+    }
+    public static Tweet parseJson(JSONObject response){
+                Gson gson = new Gson();
+                Tweet tweet = null;
+                try {
+                tweet = gson.fromJson(String.valueOf(response),Tweet.class);
+                if (response.getJSONObject("entities").has("media")) {
+                    Tweet.Media media  = gson.fromJson(
+                            String.valueOf(response.getJSONObject("entities")
+                                    .getJSONArray("media").getJSONObject(0)), Tweet.Media.class);
+                    tweet.setMedia(media);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+      return  tweet;
     }
 }

@@ -10,12 +10,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.text.Editable;
 import android.text.InputFilter;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -29,18 +29,17 @@ import com.codepath.apps.mytwitter.TwitterApplication;
 import com.codepath.apps.mytwitter.TwitterClient;
 import com.codepath.apps.mytwitter.models.Tweet;
 import com.codepath.apps.mytwitter.models.User;
+import com.loopj.android.http.JsonHttpResponseHandler;
 
 
+import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.github.rockerhieu.emojicon.EmojiconTextView;
+import cz.msebera.android.httpclient.Header;
+
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
-import twitter4j.Status;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
-import twitter4j.conf.ConfigurationBuilder;
+
 
 /**
  * Created by Admin on 7/3/2017.
@@ -69,8 +68,9 @@ public class PostTweetDialogFragment extends DialogFragment {
     TextView tvNumberText;
     private CallbackSuccess mCallbackSuccess;
     private  User user;
-
     private int numberofText = 200;
+    private TwitterClient twitterClient;
+
     public void setmCallbackSuccess(CallbackSuccess mCallbackSuccess) {
         this.mCallbackSuccess = mCallbackSuccess;
     }
@@ -79,6 +79,12 @@ public class PostTweetDialogFragment extends DialogFragment {
     public static PostTweetDialogFragment newInstance(User user) {
         Bundle args = new Bundle();
         args.putParcelable("user",user);
+        PostTweetDialogFragment  fragment= new PostTweetDialogFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+    public static PostTweetDialogFragment newInstance() {
+        Bundle args = new Bundle();
         PostTweetDialogFragment  fragment= new PostTweetDialogFragment();
         fragment.setArguments(args);
         return fragment;
@@ -95,12 +101,17 @@ public class PostTweetDialogFragment extends DialogFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setData();
+        mContent.requestFocus();
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        twitterClient = TwitterApplication.getRestClient();
         tvNumberText.setText(numberofText + "");
         btnClose.setOnClickListener(v -> {
             dismiss();
         });
         btnTweet.setOnClickListener(v -> {
-            new UpdataStatus().execute(mContent.getText().toString());
+            UpdateStatus();
+            mContent.setText("");
+
         });
         mContent.setFilters(new InputFilter[]{new InputFilter.LengthFilter(numberofText)});
 
@@ -142,26 +153,16 @@ public class PostTweetDialogFragment extends DialogFragment {
         void onCreateSuccess(Tweet tweet);
     }
 
-    private class UpdataStatus extends AsyncTask<String,Void,String> {
-        @Override
-        protected String doInBackground(String... params) {
+    public void UpdateStatus() {
+        String content = mContent.getText().toString();
+        twitterClient.postTweet(content, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                mCallbackSuccess.onCreateSuccess(Tweet.parseJson(response));
 
-            Twitter twitter = TwitterApplication.getInstance();
-            twitter4j.Status status = null;
-            try {
-                status = twitter.updateStatus(params[0]);
-            } catch (TwitterException e) {
-                e.printStackTrace();
             }
-
-            return status.getText();
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-           // mCallbackSuccess.onCreateSuccess();
-            mContent.setText("");
-            Toast.makeText(getContext(),"Succesful",Toast.LENGTH_SHORT).show();
-        }
+        });
     }
+
 }

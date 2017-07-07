@@ -7,8 +7,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.mytwitter.R;
@@ -20,6 +22,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 /**
@@ -33,7 +36,7 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private static final int HAVE_IMAGE =1;
     private Context mContext;
     private Listener mListener;
-
+    private int indexItem = 0;
     public void setmListener(Listener mListener) {
         this.mListener = mListener;
     }
@@ -51,6 +54,11 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         int pos = mTweets.size();
         mTweets.addAll(pos,tweets);
         notifyItemRangeInserted(pos,mTweets.size());
+    }
+
+    public void updateData(Tweet tweet) {
+        mTweets.set(indexItem,tweet);
+        notifyItemChanged(indexItem);
     }
 
     @Override
@@ -93,20 +101,38 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
             }
         });
-
         if (position == mTweets.size() -1) {
             mListener.onLoadMore();
         }
     }
 
     private void bindViewTweetNoImage(TweetNoImage holder, Tweet tweet) {
+
         holder.tvContent.setText(tweet.getContent());
         holder.tvName.setText(tweet.getUser().getName());
         holder.tvNickName.setText("@"+tweet.getUser().getScreenName());
         holder.tvNumberOfLike.setText(tweet.getFavouritecount()+"");
         holder.tvNumberOfShare.setText(tweet.getRetweetcount()+"");
         holder.tvTime.setText(DateUtity.parseDate(tweet.getCreateAt()));
+        holder.ibLike.setImageResource((
+                tweet.isFavorite() ? R.drawable.ic_like : R.drawable.ic_no_like));
+        holder.ibShare.setImageResource(tweet.isRetweet() ? R.drawable.ic_repeat : R.drawable.ic_no_repeat);
+        holder.ibLike.setOnClickListener( v -> {
+            indexItem = mTweets.indexOf(tweet);
+            if (tweet.isFavorite()) {
+                mListener.unLike(tweet.getId());
+            }
+            else {
+                mListener.onLike(tweet.getId());
+            }
+        });
 
+        holder.ibShare.setOnClickListener( v-> {
+            indexItem = mTweets.indexOf(tweet);
+            if (!tweet.isRetweet()) {
+                mListener.onShowDialogShare(tweet);
+            }
+            });
         Glide.with(mContext)
                 .load(tweet.getUser().getUrlAvatar())
                 .bitmapTransform(new RoundedCornersTransformation(mContext,3,2))
@@ -122,6 +148,21 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         holder.tvNumberOfShare.setText(tweet.getRetweetcount()+"");
         holder.tvTime.setText(DateUtity.parseDate(tweet.getCreateAt()));
 
+        holder.ibLike.setImageResource((
+                tweet.isFavorite() ? R.drawable.ic_like : R.drawable.ic_no_like));
+        holder.ibShare.setImageResource(tweet.isRetweet() ? R.drawable.ic_repeat : R.drawable.ic_no_repeat);
+        holder.ibLike.setOnClickListener( v -> {
+            indexItem = mTweets.indexOf(tweet);
+            if (tweet.isFavorite()) {
+                mListener.unLike(tweet.getId());
+            }
+            else {
+                mListener.onLike(tweet.getId());
+            }
+        });
+        holder.ibShare.setOnClickListener( v-> {
+            indexItem = mTweets.indexOf(tweet);
+            mListener.onShowDialogShare(tweet);});
         Glide.with(mContext)
                 .load(tweet.getUser().getUrlAvatar())
                 .bitmapTransform(new RoundedCornersTransformation(mContext,3,2))
@@ -139,12 +180,29 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         return mTweets.size();
     }
 
+    public void addOneTweet(Tweet tweet) {
+        mTweets.add(0,tweet);
+        notifyItemChanged(0);
+    }
+
     public interface Listener {
         void onClickItem(Tweet tweet);
         void onLoadMore();
+        void onLike(long idTweet);
+        void unLike(long idTweet);
+        void onShowDialogShare(Tweet tweet);
+        void onReply(long idTweet);
     }
 
     class TweetNoImage extends RecyclerView.ViewHolder {
+        @BindView(R.id.ibLike)
+        ImageButton ibLike;
+
+        @BindView(R.id.ibReply)
+        ImageButton ibReply;
+
+        @BindView(R.id.ibShare)
+        ImageButton ibShare;
 
         @BindView(R.id.tvContent)
         TextView tvContent;
@@ -175,6 +233,14 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     class TweetImage extends RecyclerView.ViewHolder {
+        @BindView(R.id.ibLike)
+        ImageButton ibLike;
+
+        @BindView(R.id.ibReply)
+        ImageButton ibReply;
+
+        @BindView(R.id.ibShare)
+        ImageButton ibShare;
 
         @BindView(R.id.tvContent)
         TextView tvContent;

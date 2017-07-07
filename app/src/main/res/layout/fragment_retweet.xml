@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:background="@color/grey"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ReTweet"
+            android:textSize="20dp"
+            android:layout_centerInParent="true"/>
+        <ImageButton
+            android:id="@+id/btnClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:background="@color/transperant"
+            android:src="@drawable/ic_close"/>
+
+    </RelativeLayout>
+
+    <EditText
+        android:padding="10dp"
+        android:id="@+id/etRetweet"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+    <ImageView
+        android:layout_below="@id/etRetweet"
+        android:id="@+id/ivAvatar"
+        android:padding="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        tools:src="@drawable/main_logo"
+        />
+
+    <RelativeLayout
+        android:id="@+id/layout1"
+        android:padding="10dp"
+        android:layout_below="@id/etRetweet"
+        android:layout_toRightOf="@id/ivAvatar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp">
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textStyle="bold"
+            tools:text="Demo" />
+        <TextView
+            android:id="@+id/tvNickName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/tvName"
+            android:layout_marginLeft="10dp"
+            android:layout_alignTop="@id/tvName"
+            android:gravity="center"
+            android:layout_alignBottom="@id/tvName"
+            android:text="sdasd"
+            />
+        <TextView
+            android:id="@+id/tvTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="9h"
+            android:textColor="@color/hint_color" />
+
+        <TextView
+            android:id="@+id/tvContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvName"
+            android:layout_marginTop="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            tools:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a" />
+        <Button
+            android:id="@+id/btnRetweet"
+            android:layout_below="@id/tvContent"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorPrimary"
+            android:layout_width="wrap_content"
+            android:text="Retweet"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    </RelativeLayout>

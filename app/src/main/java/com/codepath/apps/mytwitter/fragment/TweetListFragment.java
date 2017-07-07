@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -39,7 +40,7 @@ import io.github.rockerhieu.emojicon.emoji.Emojicon;
  * Created by Admin on 7/3/2017.
  */
 
-public class TweetListFragment extends Fragment implements TweetAdapter.Listener {
+public class TweetListFragment extends Fragment implements TweetAdapter.Listener{
 
     @BindView(R.id.rvTweets)
     RecyclerView mTweetList;
@@ -58,7 +59,8 @@ public class TweetListFragment extends Fragment implements TweetAdapter.Listener
 
     private TweetAdapter mTweetAdapter;
     private TwitterClient client;
-    PostTweetDialogFragment fragmentt;
+    PostTweetDialogFragment fragmenttPost;
+    RetweetDialog retweetDialog;
     private  User mUser;
     private List<Tweet> tweets = new ArrayList<>();
     public static TweetListFragment newInstance() {
@@ -88,8 +90,10 @@ public class TweetListFragment extends Fragment implements TweetAdapter.Listener
         client = TwitterApplication.getRestClient();
         mTweetAdapter = new TweetAdapter(getContext());
         mTweetAdapter.setmListener(this);
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
         mTweetList.setLayoutManager(layoutManager);
+        ((DefaultItemAnimator) mTweetList.getItemAnimator()).setSupportsChangeAnimations(false);
         mTweetList.setAdapter(mTweetAdapter);
         loadData();
         getCurrentUser(new ListenerUser() {
@@ -106,15 +110,25 @@ public class TweetListFragment extends Fragment implements TweetAdapter.Listener
 
         btnTweet.setOnClickListener(
                 v -> {
-                   fragmentt = PostTweetDialogFragment.newInstance(mUser);
-                    fragmentt.show(getFragmentManager(),"");
+                   newPost();
                 }
         );
 
     }
 
+    private void newPost() {
+        fragmenttPost = PostTweetDialogFragment.newInstance(mUser);
+        fragmenttPost.setmCallbackSuccess(new PostTweetDialogFragment.CallbackSuccess() {
+            @Override
+            public void onCreateSuccess(Tweet tweet) {
+                mTweetAdapter.addOneTweet(tweet);
+            }
+        });
+        fragmenttPost.show(getFragmentManager(),"");
+    }
+
     private void refresh(){
-        TwitterClient.refreshPage();
+        TwitterClient.page = 1;
         fetchTweets(tweets -> {
             mTweetAdapter.setData(tweets);
             swipeRefreshLayout.setRefreshing(false);
@@ -130,8 +144,9 @@ public class TweetListFragment extends Fragment implements TweetAdapter.Listener
 
     }
     private void loadMore() {
+        TwitterClient.page += 1;
         mLoadMore.setVisibility(View.VISIBLE);
-        TwitterClient.setPage(tweets.get(tweets.size() -1).getId());
+
         fetchTweets(tweets -> {
             mTweetAdapter.addData(tweets);
             mLoadMore.setVisibility(View.GONE);
@@ -178,6 +193,47 @@ public class TweetListFragment extends Fragment implements TweetAdapter.Listener
     public void onLoadMore() {
         loadMore();
     }
+
+    @Override
+    public void onLike(long id) {
+
+        client.favouriTweet(id, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+
+                mTweetAdapter.updateData(Tweet.parseJson(response));
+            }
+        });
+    }
+
+    @Override
+    public void unLike(long id) {
+        client.unFavorite(id, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+
+                mTweetAdapter.updateData(Tweet.parseJson(response));
+            }
+        });
+    }
+
+    @Override
+    public void onShowDialogShare(Tweet tweet) {
+        retweetDialog = RetweetDialog.newInstance(tweet);
+        retweetDialog.setCallback(new PostTweetDialogFragment.CallbackSuccess() {
+            @Override
+            public void onCreateSuccess(Tweet tweet) {
+                mTweetAdapter.updateData(tweet);
+            }
+        });
+        retweetDialog.show(getFragmentManager(),"");
+    }
+
+    @Override
+    public void onReply(long idTweet) {
+
+    }
+
 
     public interface Listener {
         void onResult(List<Tweet> tweets);

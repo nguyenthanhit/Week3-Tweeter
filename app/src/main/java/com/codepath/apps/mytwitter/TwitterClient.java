@@ -35,7 +35,12 @@ public class TwitterClient extends OAuthBaseClient {
 	public static final String REST_CALLBACK_URL_TEMPLATE = "intent://%s#Intent;action=android.intent.action.VIEW;scheme=%s;package=%s;S.browser_fallback_url=%s;end";
 
 
-	public static long maxId = 0;
+	public static int page = 1;
+
+	public void setPage(int page) {
+		this.page = page;
+	}
+
 	public TwitterClient(Context context) {
 		super(context, REST_API_INSTANCE,
 				REST_URL,
@@ -50,21 +55,43 @@ public class TwitterClient extends OAuthBaseClient {
 		String apiUrl = getApiUrl("statuses/home_timeline.json");
 		RequestParams params = new RequestParams();
 		params.put("count", 20);
-		if (maxId != 0) { params.put("max_id",maxId);}
+		params.put("page",String.valueOf(page));
         params.put("since_id",1);
 		getClient().get(apiUrl,params,handler);
+
+	}
+
+	public void postTweet (String text , AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("statuses/update.json");
+		RequestParams params = new RequestParams();
+		params.put("status",text.trim());
+		getClient().post(apiUrl,params,handler);
 
 	}
 	public void getMyAccount(AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("account/verify_credentials.json");
 		getClient().get(apiUrl,handler);
 	}
-	public static void setPage(long id) {
-		maxId = id-2;
-	}
-	public static void refreshPage(){
-		maxId = 0;
+
+	public void favouriTweet (long id, AsyncHttpResponseHandler handler) {
+
+		String apiUrl = getApiUrl("favorites/create.json");
+		RequestParams params = new RequestParams();
+		params.put("id",id);
+		getClient().post(apiUrl,params,handler);
 
 	}
 
+	public void unFavorite (long id, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("favorites/destroy.json");
+		RequestParams params = new RequestParams();
+		params.put("id",id);
+		getClient().post(apiUrl,params,handler);
+
+	}
+
+	public void onRetweet(long id, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("statuses/retweet/"+String.valueOf(id)+".json");
+		getClient().post(apiUrl,handler);
+	}
 }
