@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:id="@+id/header"
+        android:background="@drawable/cover"
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#20000000"/>
+        <ImageView
+
+            android:id="@+id/ivAvatar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            tools:src="@drawable/main_logo"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="24dp"/>
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_below="@id/ivAvatar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Demo"
+            android:textColor="@android:color/white"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:layout_centerHorizontal="true"/>
+        <TextView
+            android:id="@+id/tvNickName"
+            android:layout_below="@id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Demo"
+            android:textColor="@android:color/white"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:layout_alignStart="@id/tvName"/>
+    </RelativeLayout>
+    <TableLayout
+        android:id="@+id/tableLayout"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="*"
+        >
+        <TableRow android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/tvNumTweets"
+                android:layout_marginLeft="10dp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="234"/>
+
+            <TextView
+                android:id="@+id/tvNumeFollow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="2324" />
+
+            <TextView
+                android:id="@+id/tvNumeFollower"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:text="234"/>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="TWEETS"/>
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="FOLLOWING"/>
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="FOLLOWERS"/>
+        </TableRow>
+    </TableLayout>
+    <ImageButton
+        
+        android:background="#0000"
+        android:id="@+id/ivSetting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/setting"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@+id/tableLayout"
+         />
+    <View
+        android:id="@+id/view"
+        android:layout_below="@id/ivSetting"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="#a9626279"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvTweetsWall"
+        android:padding="5dp"
+        android:scrollbars="vertical"
+        android:background="#a9626279"
+        android:layout_below="@id/view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <ProgressBar
+        android:id="@+id/pbLoadMore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"/>
+</RelativeLayout>

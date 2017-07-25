@@ -25,6 +25,27 @@ public class User implements Parcelable  {
     @SerializedName("profile_image_url_https")
     private String urlAvatar;
 
+    @SerializedName("followers_count")
+    private String followersCount;
+
+    @SerializedName("friends_count")
+    private String friendsCount;
+
+    @SerializedName("statuses_count")
+    private String statusCount;
+
+    public String getFollowersCount() {
+        return followersCount;
+    }
+
+    public String getFriendsCount() {
+        return friendsCount;
+    }
+
+    public String getstatusCountCount() {
+        return statusCount;
+    }
+
     public long getId() {
         return id;
     }

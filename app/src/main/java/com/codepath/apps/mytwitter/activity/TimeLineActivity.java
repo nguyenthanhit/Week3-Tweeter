@@ -2,6 +2,8 @@ package com.codepath.apps.mytwitter.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -12,6 +14,7 @@ import com.codepath.apps.mytwitter.R;
 import com.codepath.apps.mytwitter.TwitterApplication;
 import com.codepath.apps.mytwitter.TwitterClient;
 import com.codepath.apps.mytwitter.Utity.DateUtity;
+import com.codepath.apps.mytwitter.adapter.AdapterFragment;
 import com.codepath.apps.mytwitter.fragment.PostTweetDialogFragment;
 import com.codepath.apps.mytwitter.fragment.TweetListFragment;
 import com.codepath.apps.mytwitter.models.Tweet;
@@ -40,6 +43,13 @@ public class TimeLineActivity extends AppCompatActivity {
     @BindView(R.id.toolBar)
     Toolbar toolbar;
 
+    @BindView(R.id.tabLayout)
+    TabLayout tabLayout;
+    @BindView(R.id.viewPager)
+    ViewPager viewPager;
+
+    AdapterFragment adapterFragment;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,13 +58,17 @@ public class TimeLineActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setIcon(R.drawable.main_logo);
-        startFragment();
+        adapterFragment = new AdapterFragment(getSupportFragmentManager());
+        viewPager.setOffscreenPageLimit(2);
+        viewPager.setAdapter(adapterFragment);
+        tabLayout.setupWithViewPager(viewPager);
+
+        tabLayout.getTabAt(0).setIcon(R.drawable.home);
+        tabLayout.getTabAt(1).setIcon(R.drawable.bell);
+        tabLayout.getTabAt(2).setIcon(R.drawable.me);
+        //startFragment();
     }
 
-    private void startFragment() {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.layoutContain, TweetListFragment.newInstance())
-                .commit();
-    }
+
 
 }

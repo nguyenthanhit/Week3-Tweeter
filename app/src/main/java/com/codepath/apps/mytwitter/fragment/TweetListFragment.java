@@ -70,6 +70,7 @@ public class TweetListFragment extends Fragment implements TweetAdapter.Listener
         return fragment;
     }
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
 

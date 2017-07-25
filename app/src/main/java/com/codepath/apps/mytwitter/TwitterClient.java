@@ -33,7 +33,8 @@ public class TwitterClient extends OAuthBaseClient {
 
 	// See https://developer.chrome.com/multidevice/android/intents
 	public static final String REST_CALLBACK_URL_TEMPLATE = "intent://%s#Intent;action=android.intent.action.VIEW;scheme=%s;package=%s;S.browser_fallback_url=%s;end";
-
+	public static final String USER_ID = "3295492988";
+	public static final String SCREEN_NAME="yannguyen9it";
 
 	public static int page = 1;
 
@@ -93,5 +94,15 @@ public class TwitterClient extends OAuthBaseClient {
 	public void onRetweet(long id, AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("statuses/retweet/"+String.valueOf(id)+".json");
 		getClient().post(apiUrl,handler);
+	}
+
+	public void getUserTimeLine(AsyncHttpResponseHandler handler) {
+
+		String apiUrl = getApiUrl("statuses/user_timeline.json");
+		RequestParams params = new RequestParams();
+		params.put("user_id",USER_ID);
+		params.put("screen_name",SCREEN_NAME);
+		params.put("page",String.valueOf(page));
+		getClient().get(apiUrl,params,handler);
 	}
 }

@@ -9,13 +9,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <android.support.v7.widget.RecyclerView
+
             android:id="@+id/rvTweets"
             android:paddingRight="@dimen/activity_vertical_margin"
             android:paddingLeft="@dimen/activity_vertical_margin"
             android:layout_width="match_parent"
             android:scrollbars="vertical"
             android:layout_height="match_parent">
-        </android.support.v7.widget.RecyclerView>
+        </android.support.v7.widget.RecyclerView
+>
     </android.support.v4.widget.SwipeRefreshLayout>
     <ProgressBar
         android:id="@+id/pbLoad"

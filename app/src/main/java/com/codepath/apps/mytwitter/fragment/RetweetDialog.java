@@ -95,7 +95,7 @@ public class RetweetDialog extends DialogFragment{
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        twitterClient = TwitterApplication.getRestClient();
+     //   twitterClient = TwitterApplication.getRestClient();
         tweet = getArguments().getParcelable("item");
         tvName.setText(tweet.getUser().getName());
         tvContent.setText(tweet.getContent());
